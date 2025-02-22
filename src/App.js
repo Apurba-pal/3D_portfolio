@@ -81,8 +81,8 @@ const App = () => {
 
   return (
     // <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-white via-gray-600 to-black">
-    
-     <div className="relative w-full h-screen overflow-hidden bg-gray-800">
+
+    <div className="relative w-full h-screen overflow-hidden bg-gray-800">
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route
@@ -94,9 +94,7 @@ const App = () => {
                 exit={pageAnimations.exit}
                 className="absolute inset-0 flex"
               >
-                <div>
-                
-                </div>
+                <div></div>
                 {/* Canvas for the 3D Model */}
                 <Canvas style={{ width: "50%", height: "100vh" }}>
                   <ambientLight intensity={2} />
@@ -114,28 +112,34 @@ const App = () => {
                   />
                 </Canvas>
                 <div className="flex flex-col justify-evenly items-center text-center text-white font-poppins text-lg leading-relaxed p-5 rounded-lg w-1/2 mx-auto">
-  <div>Hello, I am
-    <span className="text-cyan-400 font-bold text-2xl"> Apurba</span>
-    <br />
-    This is my portfolio.
-    <br />
-    Interact with the cube to view the pages.
-  </div>
-</div>
+                  <div>
+                    Hello, I am
+                    <span className="text-cyan-400 font-bold text-2xl">
+                      {" "}
+                      Apurba
+                    </span>
+                    <br />
+                    This is my portfolio.
+                    <br />
+                    Interact with the cube to view the pages.
+                  </div>
+                </div>
 
                 {/* Canvas for the Cube */}
-                <div className="flex flex-col mt-20 mb-40" style={{ width: "50%", height: "100vh",  padding: 0 }}>
-                  <Canvas style={{height:"50%", margin: 0, padding: 0}} >
+                <div
+                  className="flex flex-col mt-20 mb-40"
+                  style={{ width: "50%", height: "100vh", padding: 0 }}
+                >
+                  <Canvas style={{ height: "50%", margin: 0, padding: 0 }}>
                     <ambientLight intensity={1} />
                     <pointLight position={[10, 10, 10]} />
                     <Cube onFaceClick={setFaceClicked} />
                   </Canvas>
-                  <Canvas style={{height:"200px", margin: 0, padding: 0}}>
+                  <Canvas style={{ height: "200px", margin: 0, padding: 0 }}>
                     <primitive
                       object={hologramModel}
-                      position={[0,-1, 0]} // Adjust position to be below the cube
-                      scale={[0.3, 0.3, 0.3]} // Adjust scale as needed
-                      
+                      position={[1, -1, 0]} // Adjust position to be below the cube
+                      scale={[0.4, 0.4, 0.4]} // Adjust scale as needed
                     />
                   </Canvas>
                 </div>
