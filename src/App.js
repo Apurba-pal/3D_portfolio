@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import Cube from "./Cube";
-import { OrbitControls, useGLTF, useFBX, useAnimations } from "@react-three/drei";
+import { OrbitControls, useGLTF, useFBX } from "@react-three/drei";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Projects from "./pages/Projects";
 import Skill from "./pages/Skill";
@@ -156,7 +156,7 @@ const App = () => {
                     <pointLight position={[10, 10, 10]} />
                     <Cube onFaceClick={setFaceClicked} />
                   </Canvas>
-                  <Canvas style={{ height: "200px", margin: 0, padding: 0 }}>
+                  <Canvas style={{ height: "200px", marginBottom: "100px", padding: 0 }}>
                     <primitive
                       object={hologramModel}
                       position={[1, -1, 0]} // Adjust position to be below the cube
