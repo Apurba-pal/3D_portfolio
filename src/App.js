@@ -1,10 +1,9 @@
 //app.js
 
-import React, { useEffect, useState } from "react";
-import { Canvas } from "@react-three/fiber";
+import React, { useEffect, useState, useRef } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
 import Cube from "./Cube";
-import { OrbitControls, Text, useGLTF } from "@react-three/drei";
-import Model from "./Model";
+import { OrbitControls, useGLTF, useFBX, useAnimations } from "@react-three/drei";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Projects from "./pages/Projects";
 import Skill from "./pages/Skill";
@@ -13,6 +12,39 @@ import Education from "./pages/Education";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import { AnimatePresence, motion } from "framer-motion";
+import * as THREE from "three";
+
+
+const ModelWithAnimation = () => {
+  const group = useRef();
+  const { scene } = useGLTF("/model/6770ec28b536bee7e16f371a.glb");
+  const animation = useFBX("/animation/Talking On A Cell Phone.fbx");
+  const mixer = useRef(null);
+
+  useEffect(() => {
+    if (group.current && animation.animations.length) {
+      mixer.current = new THREE.AnimationMixer(group.current);
+      mixer.current.clipAction(animation.animations[0]).play();
+    }
+
+    return () => {
+      if (mixer.current) {
+        mixer.current.stopAllAction();
+        mixer.current = null;
+      }
+    };
+  }, [animation]);
+
+  useFrame((state, delta) => {
+    if (mixer.current) {
+      mixer.current.update(delta);
+    }
+  });
+
+  return <primitive ref={group} object={scene} scale={3.5} position={[0, -3, 0]} />;
+};
+
+
 
 const App = () => {
   const location = useLocation();
@@ -67,21 +99,13 @@ const App = () => {
           animate: { y: 0 },
           exit: { y: "-100%" },
         };
-      // default:
-      //   return {
-      //     initial: { y: "-100%" },
-      //     animate: { y: 0 },
-      //     exit: { y: "-100%" },
-      //   };
     }
   };
 
   // Get the animations based on the previous path
   const pageAnimations = getPageAnimations(faceClicked);
 
-  return (
-    // <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-white via-gray-600 to-black">
-
+    return (
     <div className="relative w-full h-screen overflow-hidden bg-gray-800">
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
@@ -99,14 +123,11 @@ const App = () => {
                 <Canvas style={{ width: "50%", height: "100vh" }}>
                   <ambientLight intensity={2} />
                   <pointLight position={[10, 10, 10]} />
-                  <Model position={[0, -3, 0]} scale={3.5} />
+                  <ModelWithAnimation/>
+                  {/* <Model position={[0, -3, 0]} scale={3.5} /> */}
                   <OrbitControls
-                    // autoRotate
-                    // autoRotateSpeed={0.5}
                     minDistance={7}
                     maxDistance={7}
-                    // enablePan={false}
-                    // dampingFactor={0.5}
                     minPolarAngle={Math.PI / 3}
                     maxPolarAngle={Math.PI / 3}
                   />

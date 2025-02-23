@@ -1,20 +1,48 @@
-import React from "react";
+import React , {useRef, useEffect} from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
-import { Canvas } from "react-three-fiber";
-import Model from "../Model";
-import { OrbitControls } from "@react-three/drei";
+import { Canvas, useFrame } from "react-three-fiber";
+import * as THREE from "three";
+import { OrbitControls, useGLTF, useFBX } from "@react-three/drei";
 
+const ModelWithAnimation = () => {
+  const group = useRef();
+  const { scene } = useGLTF("/model/6770ec28b536bee7e16f371a.glb");
+  const animation = useFBX("/animation/Talking On A Cell Phone.fbx");
+  const mixer = useRef(null);
+
+  useEffect(() => {
+    if (group.current && animation.animations.length) {
+      mixer.current = new THREE.AnimationMixer(group.current);
+      mixer.current.clipAction(animation.animations[0]).play();
+    }
+
+    return () => {
+      if (mixer.current) {
+        mixer.current.stopAllAction();
+        mixer.current = null;
+      }
+    };
+  }, [animation]);
+
+  useFrame((state, delta) => {
+    if (mixer.current) {
+      mixer.current.update(delta);
+    }
+  });
+
+  return <primitive ref={group} object={scene} scale={3.5} position={[0, -3, 0]} />;
+};
 const About = () => {
   const navigate = useNavigate();
 
   return (
     <motion.div className="bg-gradient-to-br from-gray-800 via-blue-900 to-black text-white relative flex">
       <Canvas style={{ width: "40%", height: "100vh" }}>
-                    <ambientLight intensity={1} />
+                    <ambientLight intensity={2} />
                     <pointLight position={[10, 10, 10]} />
-                    <Model position={[0, -4, 0]} scale={4} />
+                    <ModelWithAnimation/>
                     <OrbitControls
                       // autoRotate
                       // autoRotateSpeed={0.5}
