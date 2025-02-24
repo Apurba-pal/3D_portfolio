@@ -18,7 +18,7 @@ import * as THREE from "three";
 const ModelWithAnimation = () => {
   const group = useRef();
   const { scene } = useGLTF("/model/6770ec28b536bee7e16f371a.glb");
-  const animation = useFBX("/animation/Standing W_Briefcase Idle.fbx");
+  const animation = useFBX("/animation/Waving.fbx");
   const mixer = useRef(null);
 
   useEffect(() => {

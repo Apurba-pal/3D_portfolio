@@ -34,26 +34,23 @@ const ModelWithAnimation = () => {
 
   return <primitive ref={group} object={scene} scale={3.5} position={[0, -3, 0]} />;
 };
+
 const About = () => {
   const navigate = useNavigate();
 
   return (
     <motion.div className="bg-gradient-to-br from-gray-800 via-blue-900 to-black text-white relative flex">
       <Canvas style={{ width: "40%", height: "100vh" }}>
-                    <ambientLight intensity={2} />
-                    <pointLight position={[10, 10, 10]} />
-                    <ModelWithAnimation/>
-                    <OrbitControls
-                      // autoRotate
-                      // autoRotateSpeed={0.5}
-                      minDistance={7}
-                      maxDistance={7}
-                      // enablePan={false}
-                      // dampingFactor={0.5}
-                      minPolarAngle={Math.PI / 3}
-                      maxPolarAngle={Math.PI / 3}
-                    />
-                  </Canvas>
+        <ambientLight intensity={2} />
+        <pointLight position={[10, 10, 10]} />
+        <ModelWithAnimation />
+        <OrbitControls
+          minDistance={7}
+          maxDistance={7}
+          minPolarAngle={Math.PI / 3}
+          maxPolarAngle={Math.PI / 3}
+        />
+      </Canvas>
       <div className="w-4/5">
         {/* Back Button */}
         <button
@@ -69,9 +66,9 @@ const About = () => {
           <h1 className="text-4xl font-bold mb-6">About Me</h1>
           <p className="text-lg max-w-3xl mx-auto">
             Hi, I'm <span className="font-semibold">Apurba Pal</span>, a passionate developer specializing in
-            <span className="font-semibold"> web development</span>—especially front-end technologies—and
+            <span className="font-semibold"> web development</span> and
             <span className="font-semibold"> machine learning</span>. I hold a bachelor's degree in Computer Science
-            and have over two years of experience building scalable, efficient web applications. During my internship
+            and have over two years of experience building scalable web applications. During my internship
             at <span className="font-semibold">Jindal Steel and Power Limited</span>, I worked on impactful machine
             learning projects using OpenCV.
           </p>
@@ -86,8 +83,8 @@ const About = () => {
               <h2 className="text-2xl font-semibold mb-4">Professional Expertise</h2>
               <p>
                 I specialize in <span className="font-semibold">React</span> and
-                <span className="font-semibold"> Node.js</span> for building efficient, scalable applications,
-                and I bring data-driven insights to life using Python and its powerful machine learning libraries.
+                <span className="font-semibold"> Node.js</span> for building scalable applications,
+                and I use Python for machine learning.
               </p>
             </div>
 
@@ -95,9 +92,7 @@ const About = () => {
             <div className="bg-gray-700 p-6 rounded shadow-lg">
               <h2 className="text-2xl font-semibold mb-4">Professional Goals</h2>
               <p>
-                My goals include leading impactful projects in the tech industry, collaborating with innovative
-                teams, and creating designs that inspire and captivate. I aspire to make meaningful contributions
-                to projects that push the boundaries of technology.
+                My goals include leading impactful projects, collaborating with innovative teams, and creating inspiring designs.
               </p>
             </div>
           </div>
@@ -108,8 +103,7 @@ const About = () => {
             <div className="bg-gray-700 p-6 rounded shadow-lg">
               <h2 className="text-2xl font-semibold mb-4">Beyond Work</h2>
               <p>
-                When I’m not coding, I enjoy playing chess, immersing myself in video games, or expressing my
-                creativity through drawing. These activities keep me refreshed and motivated to take on new challenges.
+                I enjoy playing chess, video games, and drawing. These activities keep me refreshed and motivated.
               </p>
             </div>
 
@@ -117,8 +111,7 @@ const About = () => {
             <div className="bg-gray-700 p-6 rounded shadow-lg">
               <h2 className="text-2xl font-semibold mb-4">Let's Connect!</h2>
               <p>
-                Feel free to reach out if you'd like to collaborate on a project or just chat about technology.
-                I'm always excited to meet like-minded individuals and explore new opportunities!
+                Feel free to reach out if you'd like to collaborate or chat about technology.
               </p>
             </div>
           </div>
