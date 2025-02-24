@@ -88,7 +88,6 @@ const About = () => {
                 I specialize in <span className="font-semibold">React</span> and
                 <span className="font-semibold"> Node.js</span> for building efficient, scalable applications,
                 and I bring data-driven insights to life using Python and its powerful machine learning libraries.
-                I enjoy tackling complex problems and transforming them into elegant, user-friendly solutions.
               </p>
             </div>
 
