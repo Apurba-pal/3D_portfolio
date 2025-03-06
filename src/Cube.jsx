@@ -1,12 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text, OrbitControls } from '@react-three/drei';
 import { useNavigate } from 'react-router-dom';
+import * as THREE from 'three';
 
 const Cube = ({ onFaceClick }) => {
   const facesRef = useRef([]);
   const cubeRef = useRef();
   const navigate = useNavigate();
+  const [isHovered, setIsHovered] = useState(false);
+  const targetScales = useRef(Array(6).fill(1.0)); // Target scales for smooth interpolation
 
   // Enhanced face colors with premium gradients
   const faceColors = [
@@ -47,19 +50,40 @@ const Cube = ({ onFaceClick }) => {
     [Math.PI, 0, 0],
   ];
 
-  // Animation: Rotate and move the cube
+  // Animation: Rotate only when not hovered
   useFrame(() => {
-    if (cubeRef.current) {
+    if (cubeRef.current && !isHovered) {
       cubeRef.current.rotation.y += 0.01;
       cubeRef.current.rotation.x += 0.01;
     }
+
+    // Smooth scale animation for each face
+    facesRef.current.forEach((face, index) => {
+      if (face) {
+        const currentScale = face.scale.x;
+        const targetScale = targetScales.current[index];
+        // Lerp the scale (smooth transition)
+        face.scale.setScalar(
+          THREE.MathUtils.lerp(currentScale, targetScale, 0.15)
+        );
+      }
+    });
   });
+
+  const handleHover = (index, isEntering) => {
+    targetScales.current[index] = isEntering ? 1.1 : 1.0;
+    document.body.style.cursor = isEntering ? 'pointer' : 'default';
+  };
 
   return (
     <>
       <perspectiveCamera makeDefault position={[0, 3, 7]} />
       
-      <group ref={cubeRef}>
+      <group 
+        ref={cubeRef}
+        onPointerEnter={() => setIsHovered(true)}
+        onPointerLeave={() => setIsHovered(false)}
+      >
         {faceColors.map((color, index) => (
           <mesh
             key={index}
@@ -67,17 +91,11 @@ const Cube = ({ onFaceClick }) => {
             position={positions[index]}
             rotation={rotations[index]}
             onClick={(event) => handleFaceClick(event, index)}
-            onPointerEnter={(e) => {
-              document.body.style.cursor = 'pointer';
-              e.object.scale.multiplyScalar(1.1);
-            }}
-            onPointerLeave={(e) => {
-              document.body.style.cursor = 'default';
-              e.object.scale.multiplyScalar(1/1.1);
-            }}
+            onPointerEnter={() => handleHover(index, true)}
+            onPointerLeave={() => handleHover(index, false)}
             scale={1.7}
           >
-            <boxGeometry args={[2, 2, 0.1]} />
+            <boxGeometry args={[3.5, 3.5, 0.1]} />
             <meshPhongMaterial
               color="#1a1a1a"
               emissive="#f5b700"
