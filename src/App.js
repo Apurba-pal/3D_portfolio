@@ -106,7 +106,12 @@ const App = () => {
   const pageAnimations = getPageAnimations(faceClicked);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden gradient-bg">
+    <div className="relative w-full h-screen overflow-hidden" style={{
+      background: `radial-gradient(circle at 50% 30%, 
+        #2d2305 20%, 
+        #000000 100%
+      )`
+    }}>
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route
@@ -116,50 +121,32 @@ const App = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="absolute inset-0 flex flex-col md:flex-row items-center justify-center"
+                className="absolute inset-0 flex flex-col items-center justify-center"
               >
-                {/* Left Content */}
+                {/* Centered Cube Container */}
                 <motion.div 
-                  initial={{ x: -50, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
+                  initial={{ y: -50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="w-full md:w-1/2 p-8 text-center"
+                  className="w-full h-[70vh] flex items-center justify-center"
                 >
-                  <h1 className="text-6xl font-bold mb-4 premium-glow">
-                    Hello, I am
-                    <span className="text-gradient"> Apurba</span>
-                  </h1>
-                  <p className="text-xl text-gray-300 mb-6">
-                    Full-Stack Developer & Machine Learning Engineer
-                  </p>
-                  <p className="text-sm text-[#f5b700] cube-instruction font-light tracking-wider">
-                    ⟡ Interact with the cube to explore my portfolio ⟡
-                  </p>
+                  <Canvas>
+                    <ambientLight intensity={1} />
+                    <pointLight position={[10, 10, 10]} />
+                    <Cube onFaceClick={setFaceClicked} />
+                  </Canvas>
                 </motion.div>
 
-                {/* Right Content - Cube */}
+                {/* Bottom Text */}
                 <motion.div 
-                  initial={{ x: 50, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
+                  initial={{ y: 50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="w-full md:w-1/2 h-[600px] flex flex-col items-center justify-center"
+                  className="absolute bottom-10 w-full text-center"
                 >
-                  <div className="w-full h-full">
-                    <Canvas>
-                      <ambientLight intensity={1} />
-                      <pointLight position={[10, 10, 10]} />
-                      <Cube onFaceClick={setFaceClicked} />
-                    </Canvas>
-                  </div>
-                  <div className="w-full h-[200px]">
-                    <Canvas>
-                      <primitive
-                        object={hologramModel}
-                        position={[1, -1, 0]}
-                        scale={[0.4, 0.4, 0.4]}
-                      />
-                    </Canvas>
-                  </div>
+                  <p className="text-base text-[#f5b700] cube-instruction font-light tracking-wider">
+                    " Interact with the cube to explore my portfolio "
+                  </p>
                 </motion.div>
               </motion.div>
             }

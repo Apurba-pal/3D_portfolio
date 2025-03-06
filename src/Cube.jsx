@@ -33,12 +33,12 @@ const Cube = ({ onFaceClick }) => {
 
   // Cube positions and rotations
   const positions = [
-    [2.5, 0, 0],
-    [-2.5, 0, 0],
-    [0, 2.5, 0],
-    [0, -2.5, 0],
-    [0, 0, 2.5],
-    [0, 0, -2.5],
+    [2.6, 0, 0],
+    [-2.6, 0, 0],
+    [0, 2.6, 0],
+    [0, -2.6, 0],
+    [0, 0, 2.6],
+    [0, 0, -2.6],
   ];
 
   const rotations = [
@@ -106,11 +106,11 @@ const Cube = ({ onFaceClick }) => {
             onClick={(event) => handleFaceClick(event, index)}
             onPointerEnter={() => handleHover(index, true)}
             onPointerLeave={() => handleHover(index, false)}
-            scale={1.7}
+            scale={3}
           >
-            <boxGeometry args={[3.6, 3.6, 0.1]} />
+            <boxGeometry args={[4, 4, 0.1]} />
             <meshPhysicalMaterial
-              color="#1a1a1a"
+              color="#ffd700"
               emissive="#f5b700"
               emissiveIntensity={1.2}
               transparent
@@ -123,7 +123,7 @@ const Cube = ({ onFaceClick }) => {
             />
             <Text
               position={[0, 0, 0.1]}
-              fontSize={0.3}
+              fontSize={0.5}
               color="#ffffff"
               anchorX="center"
               anchorY="middle"
