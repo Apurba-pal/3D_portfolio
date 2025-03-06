@@ -50,6 +50,16 @@ const Cube = ({ onFaceClick }) => {
     [Math.PI, 0, 0],
   ];
 
+  // Add glow effect using multiple spotlights
+  const spotlights = [
+    { position: [10, 10, 10], intensity: 2 },
+    { position: [-10, -10, -10], intensity: 2 },
+    { position: [10, -10, 10], intensity: 2 },
+    { position: [-10, 10, -10], intensity: 2 },
+    { position: [0, 15, 0], intensity: 3 },
+    { position: [0, -15, 0], intensity: 3 },
+  ];
+
   // Animation: Rotate only when not hovered
   useFrame(() => {
     if (cubeRef.current && !isHovered) {
@@ -79,6 +89,9 @@ const Cube = ({ onFaceClick }) => {
     <>
       <perspectiveCamera makeDefault position={[0, 3, 7]} />
       
+      {/* Add fog for better glow effect */}
+      <fog attach="fog" args={['#000000', 5, 30]} />
+      
       <group 
         ref={cubeRef}
         onPointerEnter={() => setIsHovered(true)}
@@ -95,16 +108,18 @@ const Cube = ({ onFaceClick }) => {
             onPointerLeave={() => handleHover(index, false)}
             scale={1.7}
           >
-            <boxGeometry args={[3.5, 3.5, 0.1]} />
-            <meshPhongMaterial
+            <boxGeometry args={[3.6, 3.6, 0.1]} />
+            <meshPhysicalMaterial
               color="#1a1a1a"
               emissive="#f5b700"
-              emissiveIntensity={0.6}
+              emissiveIntensity={1.2}
               transparent
-              opacity={0.95}
-              shininess={100}
-              metalness={0.8}
+              opacity={0.9}
+              metalness={0.9}
               roughness={0.2}
+              clearcoat={1}
+              clearcoatRoughness={0.2}
+              reflectivity={1}
             />
             <Text
               position={[0, 0, 0.1]}
@@ -113,7 +128,7 @@ const Cube = ({ onFaceClick }) => {
               anchorX="center"
               anchorY="middle"
               outlineColor="#f5b700"
-              outlineWidth={0.03}
+              outlineWidth={0.05}
             >
               {faceNames[index]}
             </Text>
@@ -128,17 +143,30 @@ const Cube = ({ onFaceClick }) => {
         enablePan={false}
       />
 
-      <pointLight position={[0, 0, -10]} intensity={50} color="#f5b700" />
-      <pointLight position={[0, -10, 0]} intensity={30} color="#ffcc00" />
-      <spotLight
-        position={[0, 10, 0]}
-        angle={0.3}
-        penumbra={1}
-        intensity={2}
-        color="#f5b700"
-        distance={20}
+      {/* Dynamic spotlights for enhanced glow */}
+      {spotlights.map((light, index) => (
+        <spotLight
+          key={index}
+          position={light.position}
+          angle={0.5}
+          penumbra={1}
+          intensity={light.intensity}
+          color="#f5b700"
+          distance={25}
+          decay={2}
+        />
+      ))}
+
+      {/* Ambient and point lights for base illumination */}
+      <ambientLight intensity={0.3} color="#ffcc00" />
+      <pointLight position={[0, 0, 0]} intensity={2} color="#f5b700" distance={20} />
+      
+      {/* Add hemisphere light for better overall illumination */}
+      <hemisphereLight
+        skyColor="#f5b700"
+        groundColor="#000000"
+        intensity={0.5}
       />
-      <ambientLight intensity={0.2} color="#ffcc00" />
     </>
   );
 };
