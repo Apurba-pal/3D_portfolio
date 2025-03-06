@@ -105,64 +105,62 @@ const App = () => {
   // Get the animations based on the previous path
   const pageAnimations = getPageAnimations(faceClicked);
 
-    return (
-    <div className="relative w-full h-screen overflow-hidden bg-gray-800">
+  return (
+    <div className="relative w-full h-screen overflow-hidden gradient-bg">
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route
             path="/"
             element={
               <motion.div
-                initial={pageAnimations.initial}
-                animate={pageAnimations.animate}
-                exit={pageAnimations.exit}
-                className="absolute inset-0 flex"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 flex flex-col md:flex-row items-center justify-center"
               >
-                <div></div>
-                {/* Canvas for the 3D Model */}
-                {/* <Canvas style={{ width: "50%", height: "100vh" }}>
-                  <ambientLight intensity={2} />
-                  <pointLight position={[10, 10, 10]} />
-                  <ModelWithAnimation/>
-                  <OrbitControls
-                    minDistance={7}
-                    maxDistance={7}
-                    minPolarAngle={Math.PI / 3}
-                    maxPolarAngle={Math.PI / 3}
-                  />
-                </Canvas> */}
-                <div className="flex flex-col justify-evenly items-center text-center text-white font-poppins text-lg leading-relaxed p-5 rounded-lg w-1/2 mx-auto">
-                  <div>
-                    Hello, I am
-                    <span className="text-cyan-400 font-bold text-2xl">
-                      {" "}
-                      Apurba
-                    </span>
-                    <br />
-                    This is my portfolio.
-                    <br />
-                    Interact with the cube to view the pages.
-                  </div>
-                </div>
-
-                {/* Canvas for the Cube */}
-                <div
-                  className="flex flex-col mt-20 mb-40"
-                  style={{ width: "50%", height: "100vh", padding: 0 }}
+                {/* Left Content */}
+                <motion.div 
+                  initial={{ x: -50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="w-full md:w-1/2 p-8 text-center"
                 >
-                  <Canvas style={{ height: "50%", margin: 0, padding: 0 }}>
-                    <ambientLight intensity={1} />
-                    <pointLight position={[10, 10, 10]} />
-                    <Cube onFaceClick={setFaceClicked} />
-                  </Canvas>
-                  <Canvas style={{ height: "200px", marginBottom: "100px", padding: 0 }}>
-                    <primitive
-                      object={hologramModel}
-                      position={[1, -1, 0]} // Adjust position to be below the cube
-                      scale={[0.4, 0.4, 0.4]} // Adjust scale as needed
-                    />
-                  </Canvas>
-                </div>
+                  <h1 className="text-6xl font-bold mb-4 premium-glow">
+                    Hello, I am
+                    <span className="text-gradient"> Apurba</span>
+                  </h1>
+                  <p className="text-xl text-gray-300 mb-6">
+                    Full-Stack Developer & Machine Learning Engineer
+                  </p>
+                  <p className="text-sm text-[#f5b700] cube-instruction font-light tracking-wider">
+                    ⟡ Interact with the cube to explore my portfolio ⟡
+                  </p>
+                </motion.div>
+
+                {/* Right Content - Cube */}
+                <motion.div 
+                  initial={{ x: 50, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="w-full md:w-1/2 h-[600px] flex flex-col items-center justify-center"
+                >
+                  <div className="w-full h-full">
+                    <Canvas>
+                      <ambientLight intensity={1} />
+                      <pointLight position={[10, 10, 10]} />
+                      <Cube onFaceClick={setFaceClicked} />
+                    </Canvas>
+                  </div>
+                  <div className="w-full h-[200px]">
+                    <Canvas>
+                      <primitive
+                        object={hologramModel}
+                        position={[1, -1, 0]}
+                        scale={[0.4, 0.4, 0.4]}
+                      />
+                    </Canvas>
+                  </div>
+                </motion.div>
               </motion.div>
             }
           />

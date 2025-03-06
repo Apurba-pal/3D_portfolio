@@ -1,20 +1,22 @@
 import React, { useRef } from 'react';
-import { Canvas, useFrame,  } from '@react-three/fiber';
-import { OrbitControls, Text, useGLTF } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+import { Text, OrbitControls } from '@react-three/drei';
 import { useNavigate } from 'react-router-dom';
 
 const Cube = ({ onFaceClick }) => {
   const facesRef = useRef([]);
   const cubeRef = useRef();
-  // const clockRef = useRef(0);
+  const navigate = useNavigate();
 
-  const navigate = useNavigate(); // Get navigate function from react-router
-
-  // Load the hologram base model
-  // const { scene: hologramModel } = useGLTF('/model/hologram base.glb');
-
-  // Colors for each face
-  const faceColors = ['red', 'blue', 'green', 'yellow', 'orange', 'purple'];
+  // Enhanced face colors with premium gradients
+  const faceColors = [
+    'linear-gradient(45deg, #f5b700, #ffcc00)', // Projects
+    'linear-gradient(45deg, #e6a500, #ffd700)', // Skills
+    'linear-gradient(45deg, #d4af37, #ffdb58)', // Experience
+    'linear-gradient(45deg, #daa520, #ffd700)', // Education
+    'linear-gradient(45deg, #c5a000, #ffd700)', // About
+    'linear-gradient(45deg, #b8860b, #ffd700)'  // Contact
+  ];
 
   // Names for each face
   const faceNames = ['Projects', 'Skill', 'Experience', 'Education', 'About', 'Contact'];
@@ -22,9 +24,7 @@ const Cube = ({ onFaceClick }) => {
   // Handle face clicks
   const handleFaceClick = (event, index) => {
     event.stopPropagation();
-    navigate(`/${faceNames[index].toLowerCase()}`); // Navigate to the corresponding route
-
-    // Trigger the callback to pass the clicked face animation
+    navigate(`/${faceNames[index].toLowerCase()}`);
     onFaceClick(faceNames[index]);
   };
 
@@ -50,48 +50,52 @@ const Cube = ({ onFaceClick }) => {
   // Animation: Rotate and move the cube
   useFrame(() => {
     if (cubeRef.current) {
-      // clockRef.current += 0.02;
       cubeRef.current.rotation.y += 0.01;
       cubeRef.current.rotation.x += 0.01;
-      // cubeRef.current.position.y = Math.sin(clockRef.current) * 0.5;
     }
   });
 
   return (
     <>
-    
-      {/* Camera for the cube (make sure it only affects the cube) */}
       <perspectiveCamera makeDefault position={[0, 3, 7]} />
       
-      {/* Cube group with faces */}
       <group ref={cubeRef}>
         {faceColors.map((color, index) => (
           <mesh
             key={index}
             ref={(el) => (facesRef.current[index] = el)}
-            // position={positions[index]}
             position={positions[index]}
             rotation={rotations[index]}
-            onClick={(event) => handleFaceClick(event, index)} // Handle click on face 
+            onClick={(event) => handleFaceClick(event, index)}
+            onPointerEnter={(e) => {
+              document.body.style.cursor = 'pointer';
+              e.object.scale.multiplyScalar(1.1);
+            }}
+            onPointerLeave={(e) => {
+              document.body.style.cursor = 'default';
+              e.object.scale.multiplyScalar(1/1.1);
+            }}
             scale={1.7}
           >
             <boxGeometry args={[2, 2, 0.1]} />
-            <meshStandardMaterial
-              color="black"
-              emissive="cyan"
-              emissiveIntensity={0.5}
+            <meshPhongMaterial
+              color="#1a1a1a"
+              emissive="#f5b700"
+              emissiveIntensity={0.6}
               transparent
-              opacity={0.8}
+              opacity={0.95}
+              shininess={100}
+              metalness={0.8}
+              roughness={0.2}
             />
-            {/* Glowing Text */}
             <Text
-              position={[0, 0, 0.1]} // Slightly offset from the face
+              position={[0, 0, 0.1]}
               fontSize={0.3}
-              color="white"
+              color="#ffffff"
               anchorX="center"
               anchorY="middle"
-              outlineColor="grey" // Glow outline
-              outlineWidth={0.03} // Thickness of the glow
+              outlineColor="#f5b700"
+              outlineWidth={0.03}
             >
               {faceNames[index]}
             </Text>
@@ -99,21 +103,24 @@ const Cube = ({ onFaceClick }) => {
         ))}
       </group>
 
-      {/* OrbitControls for the rotating cube */}
-      <OrbitControls minDistance={7} maxDistance={7} />
+      <OrbitControls 
+        minDistance={7} 
+        maxDistance={7}
+        enableZoom={false}
+        enablePan={false}
+      />
 
-      {/* Hologram base (background, not affected by OrbitControls) */}
-      
-
-      {/* <primitive
-        object={hologramModel}
-        position={[0, -4, 0]} // Adjust position to be below the cube
-        scale={[0.3, 0.3, 0.3]} // Adjust scale as needed
-        /> */}
-
-      {/* Background Lights */}
-      <pointLight position={[0, 0, -10]} intensity={100} color="cyan" />
-      <pointLight position={[0, -10, 0]} intensity={10} color="cyan" />
+      <pointLight position={[0, 0, -10]} intensity={50} color="#f5b700" />
+      <pointLight position={[0, -10, 0]} intensity={30} color="#ffcc00" />
+      <spotLight
+        position={[0, 10, 0]}
+        angle={0.3}
+        penumbra={1}
+        intensity={2}
+        color="#f5b700"
+        distance={20}
+      />
+      <ambientLight intensity={0.2} color="#ffcc00" />
     </>
   );
 };
