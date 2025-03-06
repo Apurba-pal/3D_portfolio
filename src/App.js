@@ -120,18 +120,17 @@ const App = () => {
               >
                 <div></div>
                 {/* Canvas for the 3D Model */}
-                <Canvas style={{ width: "50%", height: "100vh" }}>
+                {/* <Canvas style={{ width: "50%", height: "100vh" }}>
                   <ambientLight intensity={2} />
                   <pointLight position={[10, 10, 10]} />
                   <ModelWithAnimation/>
-                  {/* <Model position={[0, -3, 0]} scale={3.5} /> */}
                   <OrbitControls
                     minDistance={7}
                     maxDistance={7}
                     minPolarAngle={Math.PI / 3}
                     maxPolarAngle={Math.PI / 3}
                   />
-                </Canvas>
+                </Canvas> */}
                 <div className="flex flex-col justify-evenly items-center text-center text-white font-poppins text-lg leading-relaxed p-5 rounded-lg w-1/2 mx-auto">
                   <div>
                     Hello, I am
